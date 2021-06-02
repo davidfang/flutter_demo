@@ -47,6 +47,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  //底部导航
+  List _bottoms = [
+    {"page": "", "icon": Icons.home, "label": "首页"},
+    {"page": "", "icon": Icons.label, "label": "基础组件"},
+    {"page": "", "icon": Icons.label_important, "label": "扩展组件"},
+  ];
+  //当前底部导航
+  int _currentBottomIndex = 0;
 
   void _incrementCounter() {
     setState(() {
@@ -68,11 +76,11 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
+      // appBar: AppBar(
+      //   // Here we take the value from the MyHomePage object that was created by
+      //   // the App.build method, and use it to set our appbar title.
+      //   title: Text(widget.title),
+      // ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -100,6 +108,8 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            Text(
+                "${_currentBottomIndex}--${_bottoms[_currentBottomIndex]['label']}")
           ],
         ),
       ),
@@ -108,6 +118,20 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) {
+          setState(() {
+            _currentBottomIndex = index;
+          });
+        },
+        currentIndex: _currentBottomIndex,
+        items: _bottoms
+            .map((e) => BottomNavigationBarItem(
+                  icon: Icon(e["icon"]),
+                  label: e["label"],
+                ))
+            .toList(),
+      ),
     );
   }
 }
