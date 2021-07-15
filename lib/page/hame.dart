@@ -11,6 +11,17 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Container(child: Center(child: Text('首页')));
+    return Container(
+        child: Center(
+            child: Container(
+      height: 100,
+      child: Column(
+        children: [Text('首页'), CloseButton(onPressed: _closePressed)],
+      ),
+    )));
+  }
+
+  void _closePressed() {
+    print('close pressed');
   }
 }
