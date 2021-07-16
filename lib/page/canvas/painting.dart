@@ -298,7 +298,7 @@ class _CanvasPaintingState extends State<CanvasPainting> {
             setState(() {
               RenderBox renderBox = context.findRenderObject() as RenderBox;
               points.add(TouchPoints(
-                  renderBox.globalToLocal(details.globalPosition),
+                  renderBox.globalToLocal(details.localPosition),
                   Paint()
                     ..strokeCap = strokeType
                     ..isAntiAlias = true
@@ -310,7 +310,7 @@ class _CanvasPaintingState extends State<CanvasPainting> {
             setState(() {
               RenderBox renderBox = context.findRenderObject() as RenderBox;
               points.add(TouchPoints(
-                  renderBox.globalToLocal(details.globalPosition),
+                  renderBox.globalToLocal(details.localPosition),
                   Paint()
                     ..strokeCap = strokeType
                     ..isAntiAlias = true
@@ -320,7 +320,13 @@ class _CanvasPaintingState extends State<CanvasPainting> {
           },
           onPanEnd: (details) {
             setState(() {
-              // points.add(null);
+              points.add(TouchPoints(
+                  Offset.infinite,
+                  Paint()
+                    ..strokeCap = strokeType
+                    ..isAntiAlias = true
+                    ..color = selectedColor.withOpacity(opacity)
+                    ..strokeWidth = strokeWidth));
             });
           },
           child: RepaintBoundary(
@@ -363,15 +369,17 @@ class MyPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     for (int i = 0; i < pointsList!.length - 1; i++) {
-      if (pointsList![i] != null && pointsList![i + 1] != null) {
+      if (pointsList?.elementAt(i) != null &&
+          pointsList?.elementAt(i + 1) != null) {
         //Drawing line when two consecutive points are available
         canvas.drawLine(pointsList![i].points, pointsList![i + 1].points,
             pointsList![i].paint);
-      } else if (pointsList![i] != null && pointsList![i + 1] == null) {
-        offsetPoints.clear();
-        offsetPoints.add(pointsList![i].points);
-        offsetPoints.add(Offset(
-            pointsList![i].points.dx + 0.1, pointsList![i].points.dy + 0.1));
+      } else if (pointsList?.elementAt(i) != null &&
+          pointsList?.elementAt(i + 1) == null) {
+        // offsetPoints.clear();
+        // offsetPoints.add(pointsList![i].points);
+        // offsetPoints.add(Offset(
+        //     pointsList![i].points.dx + 0.01, pointsList![i].points.dy + 0.01));
 
         //Draw points when two points are not next to each other
         canvas.drawPoints(

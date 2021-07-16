@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/page/canvas/painting.dart';
+import 'package:flutter_demo/page/canvas/signature.dart';
 import 'package:flutter_demo/page/canvas/test.dart';
 
 class BasicComponents extends StatefulWidget {
@@ -20,6 +21,7 @@ class _BasicComponentsState extends State<BasicComponents> {
         ListTile(
             title: Text('CanvasPainting'),
             onTap: () => _onTap(CanvasPainting())),
+            ListTile(title: Text('SignaturePainter'), onTap: () => _onTap(Signature())),
       ],
     ));
   }
