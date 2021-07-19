@@ -193,7 +193,7 @@ class _CanvasPaintingState extends State<CanvasPainting> {
     RenderRepaintBoundary boundary =
         globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
     ui.Image image = await boundary.toImage();
-    ByteData ? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     Uint8List pngBytes = byteData!.buffer.asUint8List();
 
     //Request permissions if not already granted
@@ -216,7 +216,7 @@ class _CanvasPaintingState extends State<CanvasPainting> {
         onPressed: () {
           //min: 0, max: 50
           setState(() {
-            // _save();
+            _save();
           });
         },
       ),

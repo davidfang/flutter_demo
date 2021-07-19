@@ -40,7 +40,8 @@ class _BasicComponentsState extends State<BasicComponents> {
       {required String title,
       required String subtitle,
       required String description,
-      required Widget routeWidget}) {
+      required Widget routeWidget,
+      String ? url}) {
     return Column(
       children: [
         Card(
@@ -67,7 +68,7 @@ class _BasicComponentsState extends State<BasicComponents> {
                   ),
                   Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                     IconButton(
-                        icon: Icon(Icons.slideshow),
+                        icon: Icon(Icons.link),
                         onPressed: () => Navigator.push(context,
                                 MaterialPageRoute(
                                     builder: (BuildContext context) {
