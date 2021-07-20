@@ -3,6 +3,8 @@ import 'package:flutter_demo/page/canvas/painting.dart';
 import 'package:flutter_demo/page/canvas/signature.dart';
 import 'package:flutter_demo/page/canvas/test.dart';
 
+import 'canvas/base.dart';
+
 class BasicComponents extends StatefulWidget {
   const BasicComponents({Key? key}) : super(key: key);
   static String routeName = '/basic_compoents';
@@ -26,12 +28,22 @@ class _BasicComponentsState extends State<BasicComponents> {
             title: 'Canvas Painting',
             subtitle: 'Canvas画笔画板',
             description: '可以设置画笔颜色、粗细、透明度等',
-            routeWidget: CanvasPainting()),
+            routeWidget: CanvasPainting(),
+            url:
+                'https://ptyagicodecamp.github.io/building-cross-platform-finger-painting-app-in-flutter.html'),
         _listItem(
             title: 'Canvas画板',
             subtitle: '简单的Canvas画板',
             description: '单纯的涂鸦板',
-            routeWidget: Signature()),
+            routeWidget: Signature(),
+            url: 'https://www.jianshu.com/p/647ad905e02c/'),
+        _listItem(
+            title: 'Canvas基础',
+            subtitle: 'Canvas 基础',
+            description:
+                'drawColor 绘制背景色，drawPoints 绘制点/线，drawLine 绘制线，drawArc 绘制弧/饼，drawRect 绘制矩形，drawDRRect 绘制嵌套矩形，drawCircle 绘制圆形，drawOval 绘制椭圆，drawPath 绘制路径',
+            routeWidget: CanvasBase(),
+            url: 'https://www.jianshu.com/p/fcdf0bc553ee'),
       ],
     ));
   }
@@ -41,7 +53,7 @@ class _BasicComponentsState extends State<BasicComponents> {
       required String subtitle,
       required String description,
       required Widget routeWidget,
-      String ? url}) {
+      String? url}) {
     return Column(
       children: [
         Card(
