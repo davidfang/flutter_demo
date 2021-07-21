@@ -4,6 +4,7 @@ import 'package:flutter_demo/page/canvas/signature.dart';
 import 'package:flutter_demo/page/canvas/test.dart';
 
 import 'canvas/base.dart';
+import 'canvas/base2.dart';
 
 class BasicComponents extends StatefulWidget {
   const BasicComponents({Key? key}) : super(key: key);
@@ -38,11 +39,17 @@ class _BasicComponentsState extends State<BasicComponents> {
             routeWidget: Signature(),
             url: 'https://www.jianshu.com/p/647ad905e02c/'),
         _listItem(
-            title: 'Canvas基础',
+            title: 'Canvas(一)基础上',
             subtitle: 'Canvas 基础',
             description:
                 'drawColor 绘制背景色，drawPoints 绘制点/线，drawLine 绘制线，drawArc 绘制弧/饼，drawRect 绘制矩形，drawDRRect 绘制嵌套矩形，drawCircle 绘制圆形，drawOval 绘制椭圆，drawPath 绘制路径',
             routeWidget: CanvasBase(),
+            url: 'https://www.jianshu.com/p/fcdf0bc553ee'),
+        _listItem(
+            title: 'Canvas(一)基础下',
+            subtitle: 'Canvas 基础 续 drawPath 绘制路径',
+            description: 'drawPath 绘制路径',
+            routeWidget: CanvasBase2(),
             url: 'https://www.jianshu.com/p/fcdf0bc553ee'),
       ],
     ));

@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 ///文档说明
-///canvas based
+///canvas based  
+///https://www.jianshu.com/p/fcdf0bc553ee
 
 class CanvasBase extends StatefulWidget {
   static String routName = '/CanvasBase';
