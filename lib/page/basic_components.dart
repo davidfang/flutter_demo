@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/page/canvas/painting.dart';
+import 'package:flutter_demo/page/canvas/photo.dart';
 import 'package:flutter_demo/page/canvas/signature.dart';
 import 'package:flutter_demo/page/canvas/test.dart';
 
@@ -51,6 +52,12 @@ class _BasicComponentsState extends State<BasicComponents> {
             description: 'drawPath 绘制路径',
             routeWidget: CanvasBase2(),
             url: 'https://www.jianshu.com/p/fcdf0bc553ee'),
+        _listItem(
+            title: 'canvas(二)图片处理',
+            subtitle: '绘制阴影 绘制图片 绘制文字段落 裁剪矩形 裁剪圆角矩形',
+            description:
+                'drawShadow 绘制阴影 drawImage 绘制图片  drawImageNine 绘制九图 drawParagraph 绘制文字段落  clipRect 裁剪矩形 clipRRect 裁剪圆角矩形',
+            routeWidget: CanvasPhoto())
       ],
     ));
   }
