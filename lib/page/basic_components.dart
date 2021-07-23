@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/page/canvas/line.dart';
 import 'package:flutter_demo/page/canvas/painting.dart';
 import 'package:flutter_demo/page/canvas/photo.dart';
 import 'package:flutter_demo/page/canvas/signature.dart';
@@ -57,7 +58,14 @@ class _BasicComponentsState extends State<BasicComponents> {
             subtitle: '绘制阴影 绘制图片 绘制文字段落 裁剪矩形 裁剪圆角矩形',
             description:
                 'drawShadow 绘制阴影 drawImage 绘制图片  drawImageNine 绘制九图 drawParagraph 绘制文字段落  clipRect 裁剪矩形 clipRRect 裁剪圆角矩形',
-            routeWidget: CanvasPhoto())
+            routeWidget: CanvasPhoto()),
+        _listItem(
+            title: 'canvas基础 带封装',
+            subtitle: '基本功能,封装值得参考',
+            description: '可以看看封装,参考一下写法',
+            routeWidget: CanvasLine(),
+            url:
+                'https://www.jianshu.com/p/0a618296fd63?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation')
       ],
     ));
   }

@@ -1,12 +1,43 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 ///文档说明
 ///drawShadow 绘制阴影 drawImage 绘制图片  drawImageNine 绘制九图
 ///drawParagraph 绘制文字段落
 ///clipRect 裁剪矩形 clipRRect 裁剪圆角矩形
+
+//方法1：获取网络图片 返回ui.Image
+Future<ui.Image> getNetImage(String url, {width, height}) async {
+  ByteData data = await NetworkAssetBundle(Uri.parse(url)).load(url);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+      targetWidth: width, targetHeight: height);
+  ui.FrameInfo fi = await codec.getNextFrame();
+  return fi.image;
+}
+
+//方法2.1：获取本地图片  返回ui.Image 需要传入BuildContext context
+Future<ui.Image> getAssetImage2(String asset, BuildContext context,
+    {width, height}) async {
+  ByteData data = await DefaultAssetBundle.of(context).load(asset);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+      targetWidth: width, targetHeight: height);
+  ui.FrameInfo fi = await codec.getNextFrame();
+  return fi.image;
+}
+
+//方法2.2：获取本地图片 返回ui.Image 不需要传入BuildContext context
+Future<ui.Image> getAssetImage(String asset, {width, height}) async {
+  ByteData data = await rootBundle.load(asset);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+      targetWidth: width, targetHeight: height);
+  ui.FrameInfo fi = await codec.getNextFrame();
+  return fi.image;
+}
+//方法3：通过stream类型来获取ui.Image 待更新
 
 class CanvasPhoto extends StatefulWidget {
   final GlobalKey globalKey = GlobalKey();
@@ -17,10 +48,14 @@ class CanvasPhoto extends StatefulWidget {
 }
 
 class _CanvasPhotoState extends State<CanvasPhoto> {
+  // ui.Image _assetImageFrame; //本地图片
+  // ui.Image _netImageFrame;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    // _getAssetImage();
+    // _getNetImage();
   }
 
   @override
@@ -41,6 +76,25 @@ class _CanvasPhotoState extends State<CanvasPhoto> {
     super.didChangeDependencies();
   }
 
+  //获取本地图片
+  // _getAssetImage() async {
+  //   ui.Image imageFrame =
+  //       await getAssetImage('assets/images/team.jpg', width: 200, height: 200);
+  //   setState(() {
+  //     _assetImageFrame = imageFrame;
+  //   });
+  // }
+
+  // //获取网络图片
+  // _getNetImage() async {
+  //   ui.Image imageFrame = await getNetImage(
+  //       'https://img.zcool.cn/community/0145f155452efa0000019ae95ef0e4.jpg@1280w_1l_2o_100sh.jpg',
+  //       width: 200);
+  //   setState(() {
+  //     _netImageFrame = imageFrame;
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -54,6 +108,8 @@ class _CanvasPhotoState extends State<CanvasPhoto> {
 }
 
 class PhotoPainter extends CustomPainter {
+  // ui.Image _imageFrame;
+  // PhotoPainter(this._imageFrame) : super();
   @override
   void paint(Canvas canvas, Size size) {
     double eWidth = 30;
@@ -133,6 +189,14 @@ class PhotoPainter extends CustomPainter {
 
     // canvas.drawImage(this.image, ui.Offset(120.0, 540.0), Paint());
     // canvas.drawImage(this.image2, ui.Offset(60.0, 60.0), Paint());
+
+    Paint selfPaint = Paint()
+      ..color = Colors.blue
+      ..style = PaintingStyle.fill
+      ..isAntiAlias = true
+      ..strokeCap = StrokeCap.butt
+      ..strokeWidth = 30.0;
+    // canvas.drawImage(_imageFrame, Offset(0, 0), selfPaint);
   }
 
 //   Future<ui.Image> _loadImage(var path, bool isUrl) async {
