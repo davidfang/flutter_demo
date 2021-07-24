@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/page/canvas/draw.dart';
 import 'package:flutter_demo/page/canvas/line.dart';
 import 'package:flutter_demo/page/canvas/painting.dart';
 import 'package:flutter_demo/page/canvas/photo.dart';
@@ -65,7 +66,13 @@ class _BasicComponentsState extends State<BasicComponents> {
             description: '可以看看封装,参考一下写法',
             routeWidget: CanvasLine(),
             url:
-                'https://www.jianshu.com/p/0a618296fd63?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation')
+                'https://www.jianshu.com/p/0a618296fd63?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation'),
+        _listItem(
+            title: 'Canvas涂雅板',
+            subtitle: '使用CustomPainter在Flutter中绘图',
+            description: '使用CustomPainter在Flutter中绘图',
+            routeWidget: CanvasDraw(),
+            url: 'https://www.jianshu.com/p/8fc32ea0df07'),
       ],
     ));
   }
