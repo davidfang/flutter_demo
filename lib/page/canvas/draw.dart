@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+
 ///Canvas涂鸦板
 ///https://www.jianshu.com/p/8fc32ea0df07
 ///https://github.com/sharansingh00002/draw
@@ -116,7 +117,7 @@ class _CanvasDrawState extends State<CanvasDraw> {
           setState(() {
             RenderBox renderBox = context.findRenderObject() as RenderBox;
             points.add(DrawingPoints(
-                points: renderBox.globalToLocal(details.globalPosition),
+                points: renderBox.globalToLocal(details.localPosition),
                 paint: Paint()
                   ..strokeCap = strokeCap
                   ..isAntiAlias = true
@@ -128,7 +129,7 @@ class _CanvasDrawState extends State<CanvasDraw> {
           setState(() {
             RenderBox renderBox = context.findRenderObject() as RenderBox;
             points.add(DrawingPoints(
-                points: renderBox.globalToLocal(details.globalPosition),
+                points: renderBox.globalToLocal(details.localPosition),
                 paint: Paint()
                   ..strokeCap = strokeCap
                   ..isAntiAlias = true
@@ -171,14 +172,6 @@ class _CanvasDrawState extends State<CanvasDraw> {
                 showLabel: true,
                 pickerAreaHeightPercent: 0.8,
               ),
-              // ColorPicker(
-              //   pickerColor: pickerColor,
-              //   onColorChanged: (color) {
-              //     pickerColor = color;
-              //   },
-              //   showLabel: true,
-              //   pickerAreaHeightPercent: 0.8,
-              // ),
             ),
             actions: <Widget>[
               TextButton(
@@ -235,6 +228,28 @@ class DrawingPainter extends CustomPainter {
   List<Offset> offsetPoints = [];
   @override
   void paint(Canvas canvas, Size size) {
+    //画个红心
+    double width = 400;
+    double height = 600;
+
+    Paint _paint = Paint()
+      ..style = PaintingStyle.fill
+      ..color = Colors.redAccent;
+    //右边一半
+    Path path = new Path();
+    path.moveTo(width / 2, height / 4);
+    path.cubicTo((width * 6) / 7, height / 9, width, (height * 2) / 5,
+        width / 2, (height * 7) / 12);
+
+    //左边一半
+    path.moveTo(width / 2, height / 4);
+    path.cubicTo(width / 7, height / 9, width / 21, (height * 2) / 5, width / 2,
+        (height * 7) / 12);
+
+    canvas.drawPath(path, _paint);
+
+    //红心画完了
+
     for (int i = 0; i < pointsList.length - 1; i++) {
       if (pointsList[i].points.isFinite && pointsList[i + 1].points.isFinite) {
         canvas.drawLine(pointsList[i].points, pointsList[i + 1].points,
