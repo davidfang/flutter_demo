@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/page/canvas/draw.dart';
+import 'package:flutter_demo/page/canvas/graph.dart';
 import 'package:flutter_demo/page/canvas/home_demo.dart';
 import 'package:flutter_demo/page/canvas/line.dart';
 import 'package:flutter_demo/page/canvas/painting.dart';
@@ -93,6 +94,13 @@ class _BasicComponentsState extends State<BasicComponents> {
             description: 'Flutter 绘图部分详解 绘图片',
             routeWidget: CanvasImage(),
             url: 'https://blog.csdn.net/qq_34476727/article/details/107519603'),
+        _listItem(
+            title: '折线图和平滑折线图',
+            subtitle: '用canvas画折线图和平滑折线图',
+            description: '用canvas画折线图和平滑折线图',
+            routeWidget: CanvasGraph(),
+            url:
+                'https://cloud.tencent.com/developer/inventory/7011/article/1760347')
       ],
     ));
   }
