@@ -48,14 +48,14 @@ class CanvasPhoto extends StatefulWidget {
 }
 
 class _CanvasPhotoState extends State<CanvasPhoto> {
-  // ui.Image _assetImageFrame; //本地图片
-  // ui.Image _netImageFrame;
+  ui.Image? _assetImageFrame; //本地图片
+  ui.Image? _netImageFrame;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // _getAssetImage();
-    // _getNetImage();
+    _getAssetImage();
+    _getNetImage();
   }
 
   @override
@@ -77,23 +77,27 @@ class _CanvasPhotoState extends State<CanvasPhoto> {
   }
 
   //获取本地图片
-  // _getAssetImage() async {
-  //   ui.Image imageFrame =
-  //       await getAssetImage('assets/images/team.jpg', width: 200, height: 200);
-  //   setState(() {
-  //     _assetImageFrame = imageFrame;
-  //   });
-  // }
+  _getAssetImage() async {
+    ui.Image imageFrame =
+        await getAssetImage('assets/images/team.jpg', width: 300, height: 300);
+    setState(() {
+      _assetImageFrame = imageFrame;
+    });
+  }
 
   // //获取网络图片
-  // _getNetImage() async {
-  //   ui.Image imageFrame = await getNetImage(
-  //       'https://img.zcool.cn/community/0145f155452efa0000019ae95ef0e4.jpg@1280w_1l_2o_100sh.jpg',
-  //       width: 200);
-  //   setState(() {
-  //     _netImageFrame = imageFrame;
-  //   });
-  // }
+  _getNetImage() async {
+    ui.Image imageFrame = await getNetImage(
+        'https://bkimg.cdn.bcebos.com/pic/58ee3d6d55fbb2fb4316aea6150137a4462309f77679',
+        width: 200,
+        height: 300);
+    setState(() {
+      _netImageFrame = imageFrame;
+    });
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -101,15 +105,19 @@ class _CanvasPhotoState extends State<CanvasPhoto> {
       appBar: new AppBar(
         title: new Text('CanvasPhoto Canvas'),
       ),
-      body: CustomPaint(
-          painter: PhotoPainter(), size: MediaQuery.of(context).size),
+      body: _assetImageFrame == null || _netImageFrame == null
+          ? Text('数据加载中')
+          : CustomPaint(
+              painter: PhotoPainter(_assetImageFrame!, _netImageFrame!),
+              size: MediaQuery.of(context).size),
     );
   }
 }
 
 class PhotoPainter extends CustomPainter {
-  // ui.Image _imageFrame;
-  // PhotoPainter(this._imageFrame) : super();
+  ui.Image _assetImageFrame;
+  ui.Image _netImageFrame;
+  PhotoPainter(this._assetImageFrame, this._netImageFrame) : super();
   @override
   void paint(Canvas canvas, Size size) {
     double eWidth = 30;
@@ -185,10 +193,6 @@ class PhotoPainter extends CustomPainter {
 
     // drawImage 绘制图片
     // drawImage 用于绘制图片，绘制图片是重点，此时的 Image 并非日常所用的图片加载，而是用的 dart.ui 类中的 ui.Image 并转换成字节流 ImageStream 方式传递，包括本地图片或网络图片
-    // 获取图片 本地为false 网络为true
-
-    // canvas.drawImage(this.image, ui.Offset(120.0, 540.0), Paint());
-    // canvas.drawImage(this.image2, ui.Offset(60.0, 60.0), Paint());
 
     Paint selfPaint = Paint()
       ..color = Colors.blue
@@ -196,46 +200,9 @@ class PhotoPainter extends CustomPainter {
       ..isAntiAlias = true
       ..strokeCap = StrokeCap.butt
       ..strokeWidth = 30.0;
-    // canvas.drawImage(_imageFrame, Offset(0, 0), selfPaint);
+    canvas.drawImage(_assetImageFrame, Offset(5, 70), selfPaint);
+    canvas.drawImage(_netImageFrame, Offset(10, 370), selfPaint);
   }
-
-//   Future<ui.Image> _loadImage(var path, bool isUrl) async {
-//     ImageStream stream;
-//     if (isUrl) {
-//       stream = NetworkImage(path).resolve(ImageConfiguration.empty);
-//     } else {
-//       stream = AssetImage(path, bundle: rootBundle)
-//           .resolve(ImageConfiguration.empty);
-//     }
-//     Completer<ui.Image> completer = Completer<ui.Image>();
-//     void listener(ImageInfo frame, bool synchronousCall) {
-//       final ui.Image image = frame.image;
-//       completer.complete(image);
-//       stream.removeListener(listener);
-//     }
-
-//     stream.addListener(listener);
-//     return completer.future;
-//   }
-
-// // 加载图片
-//   _prepareImg() {
-//     _loadImage('images/icon_hzw02.jpg', false).then((image1) {
-//       _image1 = image1;
-//     }).whenComplete(() {
-//       _loadImage(
-//               'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=703702342,1604162245&fm=26&gp=0.jpg',
-//               true)
-//           .then((image2) {
-//         _image2 = image2;
-//       }).whenComplete(() {
-//         _prepDone = true;
-//         if (this.mounted) {
-//           setState(() {});
-//         }
-//       });
-//     });
-//   }
 
   @override
   bool shouldRepaint(PhotoPainter oldDelegate) => true;

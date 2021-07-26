@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/page/canvas/draw.dart';
+import 'package:flutter_demo/page/canvas/home_demo.dart';
 import 'package:flutter_demo/page/canvas/line.dart';
 import 'package:flutter_demo/page/canvas/painting.dart';
 import 'package:flutter_demo/page/canvas/photo.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_demo/page/canvas/test.dart';
 
 import 'canvas/base.dart';
 import 'canvas/base2.dart';
+import 'canvas/image.dart';
 
 class BasicComponents extends StatefulWidget {
   const BasicComponents({Key? key}) : super(key: key);
@@ -73,6 +75,24 @@ class _BasicComponentsState extends State<BasicComponents> {
             description: '使用CustomPainter在Flutter中绘图',
             routeWidget: CanvasDraw(),
             url: 'https://www.jianshu.com/p/8fc32ea0df07'),
+        _listItem(
+            title: 'Canvas Home Demo 雷达图',
+            subtitle: 'Flutter 绘图部分详解  雷达图',
+            description: 'Flutter 绘图部分详解  雷达图',
+            routeWidget: CanvasHomeDemo(),
+            url: 'https://www.jianshu.com/p/36fc171fde1e'),
+        _listItem(
+            title: 'Canvas Home Demo 绘图片',
+            subtitle: 'Flutter 绘图部分详解 绘图片',
+            description: 'Flutter 绘图部分详解 绘图片',
+            routeWidget: CanvasHomeDrawDemo(),
+            url: 'https://www.jianshu.com/p/36fc171fde1e'),
+        _listItem(
+            title: 'Canvas  图片 ',
+            subtitle: 'Flutter 绘图部分详解 绘图片',
+            description: 'Flutter 绘图部分详解 绘图片',
+            routeWidget: CanvasImage(),
+            url: 'https://blog.csdn.net/qq_34476727/article/details/107519603'),
       ],
     ));
   }
