@@ -4,7 +4,9 @@ import 'package:flutter_demo/page/canvas/graph.dart';
 import 'package:flutter_demo/page/canvas/home_demo.dart';
 import 'package:flutter_demo/page/canvas/line.dart';
 import 'package:flutter_demo/page/canvas/painting.dart';
+import 'package:flutter_demo/page/canvas/path.dart';
 import 'package:flutter_demo/page/canvas/photo.dart';
+import 'package:flutter_demo/page/canvas/photo3.dart';
 import 'package:flutter_demo/page/canvas/signature.dart';
 import 'package:flutter_demo/page/canvas/test.dart';
 
@@ -100,7 +102,22 @@ class _BasicComponentsState extends State<BasicComponents> {
             description: '用canvas画折线图和平滑折线图',
             routeWidget: CanvasGraph(),
             url:
-                'https://cloud.tencent.com/developer/inventory/7011/article/1760347')
+                'https://cloud.tencent.com/developer/inventory/7011/article/1760347'),
+        _listItem(
+            title: 'Canvas(3)',
+            subtitle:
+                'drawVertices 绘制顶点,画布操作：scale 缩放，translate 平移，rotate 旋转，skew 斜切，save/restore 保存/恢复',
+            description:
+                'drawVertices 绘制顶点,画布操作：scale 缩放，translate 平移，rotate 旋转，skew 斜切，save/restore 保存/恢复',
+            routeWidget: CanvasPhoto3(),
+            url: 'https://www.jianshu.com/p/548ee2e35a0f'),
+        _listItem(
+            title: 'Canvas path路径操作',
+            subtitle: 'Canvas path路径操作',
+            description: 'Canvas path路径操作',
+            routeWidget: CanvasPath(),
+            url:
+                'https://juejin.cn/book/6844733827265331214/section/6844733827311468552'),
       ],
     ));
   }

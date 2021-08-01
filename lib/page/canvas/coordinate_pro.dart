@@ -10,7 +10,8 @@ class Coordinate {
   final double strokeWidth;
   final Color axisColor;
   final Color gridColor;
-  final TextPainter _textPainter = TextPainter(textDirection: TextDirection.ltr);
+  final TextPainter _textPainter =
+      TextPainter(textDirection: TextDirection.ltr);
 
   Coordinate(
       {this.step = 20,
@@ -28,9 +29,8 @@ class Coordinate {
     _drawAxis(canvas, size);
     _drawText(canvas, size);
     canvas.restore();
+    canvas.translate(size.width / 2, size.height / 2);
   }
-
-
 
   void _drawAxis(Canvas canvas, Size size) {
     _gridPaint
@@ -57,19 +57,22 @@ class Coordinate {
       ..color = Colors.grey;
 
     for (int i = 0; i < size.width / 2 / step; i++) {
-      _gridPath.moveTo(step * i, -size.height / 2 );
+      _gridPath.moveTo(step * i, -size.height / 2);
       _gridPath.relativeLineTo(0, size.height);
 
-      _gridPath.moveTo(-step * i, -size.height / 2 );
+      _gridPath.moveTo(-step * i, -size.height / 2);
       _gridPath.relativeLineTo(0, size.height);
     }
 
     for (int i = 0; i < size.height / 2 / step; i++) {
-      _gridPath.moveTo(-size.width / 2,step * i );
-      _gridPath.relativeLineTo(size.width,0 );
+      _gridPath.moveTo(-size.width / 2, step * i);
+      _gridPath.relativeLineTo(size.width, 0);
 
-      _gridPath.moveTo(-size.width / 2,-step * i,  );
-      _gridPath.relativeLineTo(size.width,0 );
+      _gridPath.moveTo(
+        -size.width / 2,
+        -step * i,
+      );
+      _gridPath.relativeLineTo(size.width, 0);
     }
 
     canvas.drawPath(_gridPath, _gridPaint);
@@ -89,7 +92,7 @@ class Coordinate {
     Size size = _textPainter.size;
     Offset offset = Offset.zero;
     if (x == null) {
-      offset = Offset(-size.width*1.5, size.width*0.7);
+      offset = Offset(-size.width * 1.5, size.width * 0.7);
     } else if (x) {
       offset = Offset(-size.width / 2, size.height / 2);
     } else {

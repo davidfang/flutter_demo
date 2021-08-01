@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,6 +51,7 @@ class CanvasPhoto extends StatefulWidget {
 class _CanvasPhotoState extends State<CanvasPhoto> {
   ui.Image? _assetImageFrame; //本地图片
   ui.Image? _netImageFrame;
+  ui.Image? _chatImageFrame; //聊天框图片
   @override
   void initState() {
     // TODO: implement initState
@@ -79,8 +81,11 @@ class _CanvasPhotoState extends State<CanvasPhoto> {
   //获取本地图片
   _getAssetImage() async {
     ui.Image imageFrame =
-        await getAssetImage('assets/images/team.jpg', width: 300, height: 300);
+        await getAssetImage('assets/images/cup.jpg', width: 300, height: 300);
+    ui.Image chatImageFrame =
+        await getAssetImage('assets/images/right_chat.png');
     setState(() {
+      _chatImageFrame = chatImageFrame;
       _assetImageFrame = imageFrame;
     });
   }
@@ -96,9 +101,6 @@ class _CanvasPhotoState extends State<CanvasPhoto> {
     });
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -108,7 +110,8 @@ class _CanvasPhotoState extends State<CanvasPhoto> {
       body: _assetImageFrame == null || _netImageFrame == null
           ? Text('数据加载中')
           : CustomPaint(
-              painter: PhotoPainter(_assetImageFrame!, _netImageFrame!),
+              painter: PhotoPainter(
+                  _assetImageFrame!, _netImageFrame!, _chatImageFrame!),
               size: MediaQuery.of(context).size),
     );
   }
@@ -117,7 +120,9 @@ class _CanvasPhotoState extends State<CanvasPhoto> {
 class PhotoPainter extends CustomPainter {
   ui.Image _assetImageFrame;
   ui.Image _netImageFrame;
-  PhotoPainter(this._assetImageFrame, this._netImageFrame) : super();
+  ui.Image _chatImageFrame;
+  PhotoPainter(this._assetImageFrame, this._netImageFrame, this._chatImageFrame)
+      : super();
   @override
   void paint(Canvas canvas, Size size) {
     double eWidth = 30;
@@ -201,7 +206,47 @@ class PhotoPainter extends CustomPainter {
       ..strokeCap = StrokeCap.butt
       ..strokeWidth = 30.0;
     canvas.drawImage(_assetImageFrame, Offset(5, 70), selfPaint);
-    canvas.drawImage(_netImageFrame, Offset(10, 370), selfPaint);
+    // canvas.drawImage(_netImageFrame, Offset(10, 370), selfPaint);
+    canvas.drawImageRect(_assetImageFrame, Rect.fromLTWH(100, 100, 150, 150),
+        Rect.fromLTWH(310, 70, 100, 100), Paint());
+    canvas.drawImageNine(_assetImageFrame, Rect.fromLTWH(100, 50, 120, 70),
+        Rect.fromLTWH(10, 380, 350, 420), Paint());
+
+    //画微信聊天框
+    canvas.drawImage(_chatImageFrame, Offset(100, 150), Paint());
+    canvas.drawImageNine(
+        _chatImageFrame,
+        Rect.fromCenter(
+            center:
+                Offset(_chatImageFrame.width / 2, _chatImageFrame.height - 6),
+            width: _chatImageFrame.width - 20,
+            height: 2),
+        Rect.fromCenter(center: Offset(100, 150), width: 100, height: 40)
+            .translate(50, 100),
+        Paint());
+
+    //绘制文字
+    ParagraphBuilder pb = ParagraphBuilder(ParagraphStyle(
+        textAlign: TextAlign.left, fontSize: 25, fontWeight: FontWeight.w700))
+      ..pushStyle(ui.TextStyle(color: Colors.green))
+      ..addText(
+          'Flutter是谷歌的移动UI框架，可以快速在iOS和Android上构建高质量的原生用户界面。 Flutter可以与现有的代码一起工作。在全世界，Flutter正在被越来越多的开发者和组织使用，并且Flutter是完全免费、开源的。');
+    ParagraphConstraints pc = ParagraphConstraints(width: 300);
+    Paragraph paragraph = pb.build()..layout(pc);
+    canvas.drawParagraph(paragraph, Offset(30, 400));
+    //裁切图片
+    canvas.clipRRect(RRect.fromRectXY(Rect.fromLTWH(30, 300, 190, 250), 30, 30),
+        doAntiAlias: false);
+    canvas.drawImage(_netImageFrame, ui.Offset(30, 300), Paint());
+
+    Path path = Path()
+      ..moveTo(30, 340)
+      ..lineTo(60, 450)
+      ..lineTo(90, 380)
+      ..lineTo(140, 360);
+    canvas.drawPath(path, Paint()..color = Colors.red);
+    // canvas.clipPath(path);
+    // canvas.drawImage(_netImageFrame, ui.Offset(10, 90), Paint());
   }
 
   @override
