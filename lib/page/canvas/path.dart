@@ -114,7 +114,36 @@ class PathPaint extends CustomPainter {
     canvas.translate(0, 160 + 160);
     Path pathOval = Path()
       ..addOval(Rect.fromCenter(center: Offset(0, 0), width: 60, height: 60));
-    canvas.drawPath(pathOval, paint);
+    canvas.drawPath(
+        Path.combine(PathOperation.difference, path, pathOval), paint);
+    _drawLableText(canvas, 'difference');
+    canvas.translate(80, 0);
+    canvas.drawPath(
+        Path.combine(PathOperation.intersect, path, pathOval), paint);
+    _drawLableText(canvas, 'intersect');
+    canvas.translate(80, 0);
+    canvas.drawPath(Path.combine(PathOperation.union, path, pathOval), paint);
+    _drawLableText(canvas, 'union');
+    canvas.translate(-80 * 3, 0);
+    canvas.drawPath(Path.combine(PathOperation.xor, path, pathOval), paint);
+    _drawLableText(canvas, 'xor');
+    canvas.translate(-80, 0);
+    canvas.drawPath(
+        Path.combine(PathOperation.reverseDifference, path, pathOval), paint);
+    canvas.translate(20, -40);
+    _drawLableText(canvas, 'reverseDifference');
+  }
+
+  //画下面的标示文字
+  _drawLableText(Canvas canvas, String str) {
+    TextPainter text = TextPainter(
+        text: TextSpan(
+            text: str, style: TextStyle(fontSize: 15, color: Colors.black)),
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr);
+    text.layout();
+    Size size = text.size;
+    text.paint(canvas, Offset(-size.width / 2, 130));
   }
 
   @override
