@@ -70,7 +70,7 @@ class GraphPainter extends CustomPainter {
   ];
   List<Offset> points2 = [
     Offset(0, 0),
-    Offset(40, -20) ,
+    Offset(40, -20),
     Offset(80, -40),
     Offset(120, -80),
     Offset(160, -40),
@@ -86,8 +86,8 @@ class GraphPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     coordinate.paint(canvas, size);
     // 画布原点 移到 屏幕中心
-    canvas.translate(size.width / 2, size.height / 2);
-    
+    //canvas.translate(size.width / 2, size.height / 2);
+
     // 绘制辅助点线
     _drawHelp(canvas);
 
@@ -95,13 +95,13 @@ class GraphPainter extends CustomPainter {
       ..color = Colors.red
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
-    
+
     Path path = Path();
     addBezierPathWithPoints(path, points2);
     canvas.drawPath(path, paint);
 
     addBezierPathWithPoints(_linePath, points1);
-    canvas.drawPath(_linePath, paint..color=Colors.orange);
+    canvas.drawPath(_linePath, paint..color = Colors.orange);
   }
 
   void _drawHelp(Canvas canvas) {

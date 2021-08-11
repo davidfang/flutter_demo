@@ -9,6 +9,7 @@ import 'package:flutter_demo/page/canvas/photo.dart';
 import 'package:flutter_demo/page/canvas/photo3.dart';
 import 'package:flutter_demo/page/canvas/signature.dart';
 import 'package:flutter_demo/page/canvas/test.dart';
+import 'package:flutter_demo/page/idraw/white_paper.dart';
 
 import 'canvas/base.dart';
 import 'canvas/base2.dart';
@@ -118,6 +119,11 @@ class _BasicComponentsState extends State<BasicComponents> {
             routeWidget: CanvasPath(),
             url:
                 'https://juejin.cn/book/6844733827265331214/section/6844733827311468552'),
+        _listItem(
+            title: '集合画布',
+            subtitle: '集合各种操作',
+            description: '将各种操作都集合到一起',
+            routeWidget: WhitePaper())
       ],
     ));
   }
