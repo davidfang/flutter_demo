@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'component/paint_setting_dialog.dart';
 import 'model/line.dart';
 import 'model/paint_model.dart';
 import 'model/point.dart';
@@ -57,6 +59,7 @@ class _WhitePaperState extends State<WhitePaper> {
           onPanEnd: _doneAline,
           onPanCancel: _cancel,
           onDoubleTap: _clear,
+          onTap: _showSettingDialog,
           child: CustomPaint(
               size: MediaQuery.of(context).size,
               painter: PaperPainter(model: paintModel)),
@@ -85,4 +88,22 @@ class _WhitePaperState extends State<WhitePaper> {
   }
 
   void _clear() {}
+  //弹出设置
+  void _showSettingDialog() {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (context) => PaintSettingDialog(
+            initColor: lineColor,
+            initWidth: strokeWidth,
+            onLineWidthSelect: _selectWidth,
+            onColorSelect: _selectColor));
+  }
+
+  void _selectWidth(double width) {
+    strokeWidth = width;
+  }
+
+  void _selectColor(Color color) {
+    lineColor = color;
+  }
 }
