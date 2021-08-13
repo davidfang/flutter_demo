@@ -14,6 +14,7 @@ import 'package:flutter_demo/page/idraw/white_paper.dart';
 import 'canvas/base.dart';
 import 'canvas/base2.dart';
 import 'canvas/image.dart';
+import 'canvas/paint_page.dart';
 
 class BasicComponents extends StatefulWidget {
   const BasicComponents({Key? key}) : super(key: key);
@@ -123,7 +124,13 @@ class _BasicComponentsState extends State<BasicComponents> {
             title: '集合画布',
             subtitle: '集合各种操作',
             description: '将各种操作都集合到一起',
-            routeWidget: WhitePaper())
+            routeWidget: WhitePaper()),
+        _listItem(
+            title: '画一个自定义的CircleProgressBar',
+            subtitle: '画一个自定义的CircleProgressBar',
+            description: '画一个自定义的CircleProgressBar',
+            routeWidget: ProgressBarPage(),
+            url: 'https://www.cnblogs.com/pythonClub/p/10859169.html')
       ],
     ));
   }
