@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 
 class Point {
@@ -6,9 +8,13 @@ class Point {
 
   const Point({this.x, this.y});
 
+  double get distance => sqrt(x! * x! + y! * y!);
+
   factory Point.fromOffset(Offset offset) {
     return new Point(x: offset.dx, y: offset.dy);
   }
+
+  Point operator -(Point other) =>Point(x:x!-other.x!, y:y!-other.y!);
 
   Offset toOffset() => Offset(x ?? 0, y ?? 0);
 }

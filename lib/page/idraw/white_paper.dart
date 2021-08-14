@@ -54,12 +54,16 @@ class _WhitePaperState extends State<WhitePaper> {
           title: new Text('空白画纸'),
         ),
         body: GestureDetector(
+          onTap: _showSettingDialog,
           onPanDown: _initLineData,
           onPanUpdate: _collectPoint,
+          onLongPressStart: _activateEdit, //长按开始移动
+          onLongPressUp: _cancelEdit, // 长按抬起
+          onLongPressMoveUpdate: _moveEdit, //长按移动
           onPanEnd: _doneAline,
           onPanCancel: _cancel,
           onDoubleTap: _clear,
-          onTap: _showSettingDialog,
+
           child: CustomPaint(
               size: MediaQuery.of(context).size,
               painter: PaperPainter(model: paintModel)),
@@ -87,7 +91,10 @@ class _WhitePaperState extends State<WhitePaper> {
     paintModel.removeEmpty();
   }
 
-  void _clear() {}
+  void _clear() {
+    paintModel.clear();
+  }
+
   //弹出设置
   void _showSettingDialog() {
     showCupertinoModalPopup(
@@ -105,5 +112,17 @@ class _WhitePaperState extends State<WhitePaper> {
 
   void _selectColor(Color color) {
     lineColor = color;
+  }
+
+  void _activateEdit(LongPressStartDetails details) {
+    paintModel.activeEditLine(Point.fromOffset(details.localPosition));
+  }
+
+  void _cancelEdit() {
+    paintModel.cancelEditLine();
+  }
+
+  void _moveEdit(LongPressMoveUpdateDetails details) {
+    paintModel.moveEditLine(details.offsetFromOrigin);
   }
 }
