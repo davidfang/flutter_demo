@@ -15,6 +15,7 @@ import 'canvas/base.dart';
 import 'canvas/base2.dart';
 import 'canvas/image.dart';
 import 'canvas/paint_page.dart';
+import 'canvas/scale_gesture_demo.dart';
 
 class BasicComponents extends StatefulWidget {
   const BasicComponents({Key? key}) : super(key: key);
@@ -130,7 +131,8 @@ class _BasicComponentsState extends State<BasicComponents> {
             subtitle: '画一个自定义的CircleProgressBar',
             description: '画一个自定义的CircleProgressBar',
             routeWidget: ProgressBarPage(),
-            url: 'https://www.cnblogs.com/pythonClub/p/10859169.html')
+            url: 'https://www.cnblogs.com/pythonClub/p/10859169.html'),
+            _listItem(title: '基于手势的缩放', subtitle: '基于手势的缩放', description: '基于手势的缩放', routeWidget: ScaleGestureDemo())
       ],
     ));
   }
