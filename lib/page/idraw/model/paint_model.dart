@@ -8,6 +8,15 @@ class PaintModel extends ChangeNotifier {
   List<Line?> get lines => _lines;
   final double tolerance = 5.0;
 
+  Matrix4 _matrix = Matrix4.identity();
+
+  set matrix(Matrix4 value) {
+    _matrix = value;
+    notifyListeners();
+  }
+
+  Matrix4 get matrix => _matrix;
+
   Line? get activeLine =>
       _lines.singleWhere((element) => element?.state == PaintState.doing,
           orElse: () => null);
@@ -19,6 +28,11 @@ class PaintModel extends ChangeNotifier {
     List<Line?> lines = _lines
         .where((line) => line!.path.getBounds().contains(point.toOffset()))
         .toList();
+
+    // List<Line?> lines = _lines
+    //     .where((line) => line!.contains(point.toOffset(), _matrix)) //<---
+    //     .toList();
+
     print(lines.length);
     if (lines.isNotEmpty) {
       lines[0]!.state = PaintState.edit;

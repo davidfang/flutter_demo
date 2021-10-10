@@ -10,6 +10,13 @@ import 'paper_painter.dart';
 ///文档说明
 ///绘画的白纸
 
+enum TransformType {
+  none, //绘制
+  translate, //移动
+  rotate, //旋转
+  scale, //缩放
+}
+
 class WhitePaper extends StatefulWidget {
   static String routName = '/WhitePaper';
 
@@ -21,6 +28,17 @@ class _WhitePaperState extends State<WhitePaper> {
   final PaintModel paintModel = PaintModel();
   Color lineColor = Colors.black;
   double strokeWidth = 1;
+  ValueNotifier<TransformType> type =
+      ValueNotifier<TransformType>(TransformType.none);
+  Matrix4 recodeMatrix = Matrix4.identity();
+  Offset _offset = Offset.zero;
+
+  static const List<IconData> icons = [
+    Icons.edit, //编辑
+    Icons.api, //移动
+    Icons.rotate_90_degrees_ccw, //旋转
+    Icons.expand, //缩放
+  ];
 
   @override
   void initState() {
@@ -47,26 +65,56 @@ class _WhitePaperState extends State<WhitePaper> {
     super.didChangeDependencies();
   }
 
+  Widget _buildTools() {
+    return ValueListenableBuilder(
+        valueListenable: type,
+        builder: (BuildContext context, TransformType typeValue, __) => Row(
+              mainAxisSize: MainAxisSize.min,
+              children: icons.asMap().keys.map((index) {
+                bool active = typeValue == TransformType.values[index];
+                return IconButton(
+                    onPressed: () => type.value = TransformType.values[index],
+                    icon: Icon(icons[index],
+                        color: active ? Colors.blue : Colors.black54));
+              }).toList(),
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
           title: new Text('空白画纸'),
         ),
-        body: GestureDetector(
-          onTap: _showSettingDialog,
-          onPanDown: _initLineData,
-          onPanUpdate: _collectPoint,
-          onLongPressStart: _activateEdit, //长按开始移动
-          onLongPressUp: _cancelEdit, // 长按抬起
-          onLongPressMoveUpdate: _moveEdit, //长按移动
-          onPanEnd: _doneAline,
-          onPanCancel: _cancel,
-          onDoubleTap: _clear,
+        body: Stack(
+          children: [
+            GestureDetector(
+              onTap: _showSettingDialog,
+              // onPanDown: _initLineData,
+              // onPanUpdate: _collectPoint,
+              // onPanEnd: _doneAline,
+              // onPanCancel: _cancel,
 
-          child: CustomPaint(
-              size: MediaQuery.of(context).size,
-              painter: PaperPainter(model: paintModel)),
+              onScaleStart: _onScaleStart, // 开始
+              onScaleUpdate: _onScaleUpdate, // 更新
+              onScaleEnd: _onScaleEnd, // 抬起
+
+              onLongPressStart: _activateEdit, //长按开始移动
+              onLongPressUp: _cancelEdit, // 长按抬起
+              onLongPressMoveUpdate: _moveEdit, //长按移动
+
+              onDoubleTap: _clear,
+
+              child: CustomPaint(
+                  size: MediaQuery.of(context).size,
+                  painter: PaperPainter(model: paintModel)),
+            ),
+            Positioned(
+              child: _buildTools(),
+              right: 20,
+              top: 10,
+            )
+          ],
         ));
   }
 
@@ -124,5 +172,61 @@ class _WhitePaperState extends State<WhitePaper> {
 
   void _moveEdit(LongPressMoveUpdateDetails details) {
     paintModel.moveEditLine(details.offsetFromOrigin);
+  }
+
+  void _onScaleStart(ScaleStartDetails details) {
+    switch (type.value) {
+      case TransformType.none:
+        Line line = Line(color: lineColor, strokeWidth: strokeWidth);
+        paintModel.pushLine(line);
+        break;
+      case TransformType.translate:
+        if (details.pointerCount == 1) {
+          _offset = details.focalPoint;
+        }
+        break;
+      case TransformType.rotate:
+        break;
+      case TransformType.scale:
+        break;
+    }
+  }
+
+  void _onScaleUpdate(ScaleUpdateDetails details) {
+    switch (type.value) {
+      case TransformType.none:
+        paintModel.pushPoint(Point.fromOffset(details.localFocalPoint));
+        break;
+      case TransformType.translate:
+        paintModel.matrix = Matrix4.translationValues(
+                (details.focalPoint.dx - _offset.dx),
+                (details.focalPoint.dy - _offset.dy),
+                1)
+            .multiplied(recodeMatrix);
+        break;
+      case TransformType.rotate:
+        paintModel.matrix =
+            recodeMatrix.multiplied(Matrix4.rotationZ(details.rotation));
+        break;
+      case TransformType.scale:
+        if (details.scale == 1.0) return;
+        paintModel.matrix = recodeMatrix.multiplied(
+            Matrix4.diagonal3Values(details.scale, details.scale, 1));
+        break;
+    }
+  }
+
+  void _onScaleEnd(ScaleEndDetails details) {
+    switch (type.value) {
+      case TransformType.none:
+        paintModel.doneLine();
+        paintModel.removeEmpty();
+        break;
+      case TransformType.translate:
+      case TransformType.rotate:
+      case TransformType.scale:
+        recodeMatrix = paintModel.matrix;
+        break;
+    }
   }
 }

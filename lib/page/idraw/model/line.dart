@@ -13,13 +13,15 @@ class Line {
   Color color;
   Path _linePath = Path();
   Path? _recodePath;
-
-  Line(
-      {this.color = Colors.black,
-      this.strokeWidth = 1,
-      this.state = PaintState.doing});
+  Size? paperSize;
+  Line({
+    this.color = Colors.black,
+    this.strokeWidth = 1,
+    this.state = PaintState.doing,
+  });
   Path get path => _linePath;
-  void paint(Canvas canvas, Paint paint) {
+  void paint(Canvas canvas, Size size, Paint paint, Matrix4 matrix) {
+    Size paperSize = size;
     paint
       ..style = PaintingStyle.stroke
       ..color = color
@@ -29,6 +31,12 @@ class Line {
 
     if (state == PaintState.doing) {
       _linePath = formPath();
+      final Matrix4 result = Matrix4.identity();
+      result.translate(paperSize.width / 2, paperSize.height / 2);
+      result.multiply(matrix);
+      result.translate(-paperSize.width / 2, -paperSize.height / 2);
+      result.invert();
+      _linePath = path.transform(result.storage);
     }
     //画路径顺滑的线
     canvas.drawPath(_linePath, paint);
@@ -68,6 +76,15 @@ class Line {
   void translate(Offset offset) {
     if (_recodePath == null) return;
     _linePath = _recodePath!.shift(offset);
+  }
+
+  bool contains(Offset offset, [Matrix4? _matrix]) {
+    final Matrix4 result = Matrix4.identity();
+    result.translate(paperSize!.width / 2, paperSize!.height / 2);
+    result.multiply(_matrix!);
+    result.translate(-paperSize!.width / 2, -paperSize!.height / 2);
+    Path judgePath = path.transform(result.storage);
+    return judgePath.getBounds().contains(offset);
   }
 
   Path formPath() {

@@ -10,7 +10,13 @@ class PaperPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    model.lines.forEach((line) => line?.paint(canvas, _paint));
+    final Matrix4 result = new Matrix4.identity();
+    result.translate(size.width / 2, size.height / 2);
+    result.multiply(model.matrix);
+    result.translate(-size.width / 2, -size.height / 2);
+    canvas.transform(result.storage);
+
+    model.lines.forEach((line) => line?.paint(canvas,size, _paint,model.matrix));
   }
 
   @override
